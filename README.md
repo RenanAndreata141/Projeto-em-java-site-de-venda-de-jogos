@@ -5,9 +5,9 @@ Projeto para praticar, basicamente, um site de venda de jogos
 <html>
 <body>
 <h1>STACK:</h1><br> <br>
-  <h2>-JAVA</h2> <br>
-  <h2>-HTML</h2> <br>
-  <h2>-CSS</h2>  <br>
-  <h2>-JAVASCRIPT</h2> <br>
+  <p>-JAVA <br>
+  <p>-HTML <br>
+  <p>-CSS  <br>
+  <p>-JAVASCRIPT <br>
 </body>
 </html>

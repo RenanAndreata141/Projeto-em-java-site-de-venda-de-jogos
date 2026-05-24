@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript">
+        function carregarconsultartodos() {
+            window.location = "/SitedeVendadeJogos/controle_cliente?op=CONSULTAR TODOS"
+        }
+    </script>
+</head>
+<header>
+
+</header>
+<body>
+<form name="f1" action="controle_cliente" method="POST">
+    <div><h1>Registro</h1></div>
+    Nome: <input type="text" name="txtnome"><BR><BR>
+    Email: <input type="text" name="txtemail"><BR><BR>
+    Senha: <input type="password" name="txtsenha"><BR><BR>
+    <input type="submit" name="op" value="CADASTRAR">
+</form>
+<a href="login.html">Já possui uma conta? clique aqui!</a>
+</body>
+</html>

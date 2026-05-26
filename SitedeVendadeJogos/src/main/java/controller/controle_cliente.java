@@ -41,7 +41,7 @@ public class controle_cliente extends HttpServlet {
                 } catch (SQLException | ClassNotFoundException ex) {
                     System.out.println("Erro ClassNotFound: " + ex.getMessage());
                     request.setAttribute("message", msg);
-                    request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
 
                 }
             } else if (op.equals("DELETAR")) {
@@ -56,7 +56,7 @@ public class controle_cliente extends HttpServlet {
                 } catch (ClassNotFoundException | SQLException exD) {
                     System.out.println("Erro ClassNotFound: " + exD.getMessage());
                     request.setAttribute("message", msgD);
-                    request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                 }
             } else if (op.equals("CONSULTAR BY ID")) {
                 int id = Integer.parseInt(request.getParameter("txtid"));
@@ -64,7 +64,7 @@ public class controle_cliente extends HttpServlet {
                 try {
                     c = cdao.consultarPeloId(c);
                     request.setAttribute("c", c);
-                    request.getRequestDispatcher("resultadoconsultabyid.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/results/resultadoconsultabyid.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exCoI) {
                     System.out.println("Erro ClassNotFound: " + exCoI.getMessage());
                 }
@@ -73,7 +73,7 @@ public class controle_cliente extends HttpServlet {
                 try {
                     List<cliente> lcliente = cdao.consultarTodos();
                     request.setAttribute("lcliente", lcliente);
-                    request.getRequestDispatcher("resultadoconsultartodos.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/results/resultadoconsultartodos.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exCoT) {
                     System.out.println("Erro ClassNotFound: " + exCoT.getMessage());
                 }
@@ -83,7 +83,7 @@ public class controle_cliente extends HttpServlet {
                 try {
                     c = cdao.consultarPeloId(c);
                     request.setAttribute("c", c);
-                    request.getRequestDispatcher("resultadoconsultaratualizar.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/results/resultadoconsultaratualizar.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exCoA) {
                     System.out.println("Erro ClassNotFound: " + exCoA.getMessage());
                 }
@@ -100,11 +100,11 @@ public class controle_cliente extends HttpServlet {
                     cdao.alterar(c);
                     System.out.println("Atualizado com sucesso");
                     request.setAttribute("message", msgAtu);
-                    request.getRequestDispatcher("resultado.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/results/resultado.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exATU) {
                     System.out.println("Erro ClassNotFound: " + exATU.getMessage());
                     request.setAttribute("message", msgAtu);
-                    request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                 }
             }else if (op.equals("LOGIN")) {
                 String email = request.getParameter("txtemail");
@@ -117,15 +117,15 @@ public class controle_cliente extends HttpServlet {
                         jakarta.servlet.http.HttpSession sessao = request.getSession();
                         sessao.setAttribute("usuarioLogado", clienteLogado);
 
-                        request.getRequestDispatcher("home.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
                     } else {
                         request.setAttribute("message", "Email ou senha incorretos.");
-                        request.getRequestDispatcher("erro.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                     }
                 } catch (ClassNotFoundException | SQLException ex) {
                     System.out.println("Erro na autenticação: " + ex.getMessage());
                     request.setAttribute("message", "Erro interno no servidor.");
-                    request.getRequestDispatcher("erro.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                 }
             }
         }

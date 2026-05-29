@@ -8,7 +8,18 @@
     <body>
         <%
            String msg = (String) request.getAttribute("message");
+           String exR = (String) request.getAttribute("Error");
+
+           if(msg != null){
         %>
         <h1><%out.println(msg);%> não realizado</h1>
+
+        <%
+        }else{
+        %>
+        <h1><%out.println(exR);%> Exception</h1>
+        <%
+        }
+        %>
     </body>
 </html>

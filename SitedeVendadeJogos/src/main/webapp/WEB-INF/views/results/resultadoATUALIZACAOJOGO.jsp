@@ -7,7 +7,7 @@
         <title>Resultado da atualização</title>
     </head>
     <section class="botaoCada">
-        <img src="/webapp/images/logo.png" alt="logo" onclick="location.href='controle_jogos?op=REDIRECIONAR_VITRINE'">
+        <img src="/webapp/images/logo.png" alt="logo" onclick="location.href='controle_jogos?op=REDIRECIONAR_HOME'">
     </section>
     <body>
         <h1>Resultado Alteração do jogo</h1>

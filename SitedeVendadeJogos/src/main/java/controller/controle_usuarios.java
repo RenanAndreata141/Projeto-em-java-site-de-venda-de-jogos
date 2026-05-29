@@ -142,6 +142,15 @@ public class controle_usuarios extends HttpServlet {
                     request.setAttribute("message", "Arquivo não encontrado");
                     request.getRequestDispatcher("/WEB-INF/errors/vitrineError.jsp").forward(request, response);
                 }
+            }else if(op.equals("REDIRECIONAR_INDEX")){
+                String msg = "Redirecionar home";
+                try{
+                    request.setAttribute("message", msg);
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                }catch (Exception exR){
+                    request.setAttribute("Error", exR.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/errors/erro.jps");
+                }
             }
         }
     }

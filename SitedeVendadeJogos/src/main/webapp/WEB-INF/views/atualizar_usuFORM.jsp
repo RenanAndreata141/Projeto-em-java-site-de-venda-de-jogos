@@ -11,7 +11,7 @@
 </head>
 <header>
 <section class="botaoCada">
-    <a href="controle_jogos?op=REDIRECIONAR_VITRINE">
+    <a href="controle_jogos?op=REDIRECIONAR_HOME">
       <img src="/webapp/images/logo.png" alt="logo">
     </a>
 </section>

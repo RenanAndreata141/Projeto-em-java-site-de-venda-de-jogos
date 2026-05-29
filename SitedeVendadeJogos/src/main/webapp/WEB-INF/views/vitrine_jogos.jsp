@@ -20,7 +20,7 @@
 </head>
 <header>
     <section class="botaoCada">
-        <img src="/webapp/images/logo.png" alt="logo" onclick="location.href='controle_jogos?op=REDIRECIONAR_VITRINE'">
+        <img src="/webapp/images/logo.png" alt="logo" onclick="location.href='controle_jogos?op=REDIRECIONAR_HOME'">
     </section>
 <section id = "botaoCriarJogo">
     <button onclick="location.href='controle_jogos?op=REDI_CADASTRO'">Cadastrar Jogos</a>

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.cliente" %>
+<%@ page import="model.usuario" %>
 <%@ page import="model.jogo" %>
 <html>
 <head>
@@ -12,16 +12,16 @@
 </header>
 <body>
     <%
-        cliente usuario = (cliente) session.getAttribute("usuarioLogado");
+        usuario c = (usuario) session.getAttribute("usuarioLogado");
 
-        if (usuario == null) {
+        if (c == null) {
             response.sendRedirect(request.getContextPath() + "/login.html");
         }
     %>
-
-    <h1>Bem-vindo à Loja de Jogos, <%= usuario.getNome() %>!</h1>
-    <p>Seu e-mail cadastrado é: <%= usuario.getEmail() %></p>
-
-    <a href="controle_jogos?op=REDIRECIONAR VITRINE">Ver Jogos Disponíveis</a>
+<body>
+    <h1>Bem-vindo à sua Loja de Jogos, <%= c.getNome() %>!</h1>
+    <p>Verifique os jogos e usuarios abaixo</p>
+    <button onclick="location.href='controle_jogos?op=REDIRECIONAR_VITRINE'">Ver Jogos Disponíveis</button>
+    <button onclick="location.href='controle_usuarios?op=REDIRECIONAR_USUARIOS'">Ver Lista de Usuários</button>
 </body>
 </html>

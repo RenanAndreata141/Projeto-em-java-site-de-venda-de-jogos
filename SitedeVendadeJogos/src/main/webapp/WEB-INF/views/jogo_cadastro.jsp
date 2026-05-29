@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.cliente" %>
+<%@ page import="model.usuario" %>
 <%@ page import="model.jogo" %>
 
 <!DOCTYPE html>
@@ -11,13 +11,13 @@
 
     <script type="text/javascript">
         function carregarconsultartodos() {
-            window.location = "/controle_jogos?op=CONSULTAR TODOS"
+            window.location = "/controle_jogos?op=CONSULTAR_TODOS"
         }
     </script>
 </head>
 <header>
-<section id="botaoCada">
-    <a href="controle_jogos?op=REDIRECIONAR VITRINE">
+<section class="botaoCada">
+    <a href="controle_jogos?op=REDIRECIONAR_VITRINE">
       <img src="/webapp/images/logo.png" alt="logo">
     </a>
 </section>

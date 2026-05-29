@@ -1,29 +1,32 @@
 package controller;
 
-import dao.clienteDAO;
+import dao.usuarioDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.cliente;
+import model.usuario;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
 
-@WebServlet(name = "controle_cliente", urlPatterns = {"/controle_cliente"})
-public class controle_cliente extends HttpServlet {
+
+@WebServlet(name = "controle_usuarios", urlPatterns = {"/controle_usuarios"})
+public class controle_usuarios extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String op = request.getParameter("op");
-            clienteDAO cdao = new clienteDAO();
-            cliente c = new cliente();
+            usuarioDAO cdao = new usuarioDAO();
+            usuario c = new usuario();
 
             if (op.equals("CADASTRAR")) {
                 String nome = request.getParameter("txtnome");
@@ -37,7 +40,7 @@ public class controle_cliente extends HttpServlet {
                     cdao.cadastrar(c);
                     System.out.println("Cadastrado com sucesso");
                     request.setAttribute("message", msg);
-                    request.getRequestDispatcher("resultado.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/results/resultado.jsp").forward(request, response);
                 } catch (SQLException | ClassNotFoundException ex) {
                     System.out.println("Erro ClassNotFound: " + ex.getMessage());
                     request.setAttribute("message", msg);
@@ -47,18 +50,18 @@ public class controle_cliente extends HttpServlet {
             } else if (op.equals("DELETAR")) {
                 int id = Integer.parseInt(request.getParameter("txtid"));
                 c.setId(id);
-                String msgD = "Deletar";
+                String msg = "Deletar";
                 try {
                     cdao.deletar(c);
-                    List<cliente> lcliente = cdao.consultarTodos();
+                    List<usuario> lcliente = cdao.consultarTodos();
                     request.setAttribute("lcliente", lcliente);
                     request.getRequestDispatcher("resultadoconsultartodos.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exD) {
                     System.out.println("Erro ClassNotFound: " + exD.getMessage());
-                    request.setAttribute("message", msgD);
+                    request.setAttribute("message", msg);
                     request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                 }
-            } else if (op.equals("CONSULTAR BY ID")) {
+            } else if (op.equals("CONSULTAR_BY_ID")) {
                 int id = Integer.parseInt(request.getParameter("txtid"));
                 c.setId(id);
                 try {
@@ -69,41 +72,45 @@ public class controle_cliente extends HttpServlet {
                     System.out.println("Erro ClassNotFound: " + exCoI.getMessage());
                 }
 
-            } else if (op.equals("CONSULTAR TODOS")) {
+            } else if (op.equals("CONSULTAR_TODOS")) {
                 try {
-                    List<cliente> lcliente = cdao.consultarTodos();
+                    List<usuario> lcliente = cdao.consultarTodos();
                     request.setAttribute("lcliente", lcliente);
                     request.getRequestDispatcher("/WEB-INF/views/results/resultadoconsultartodos.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exCoT) {
                     System.out.println("Erro ClassNotFound: " + exCoT.getMessage());
                 }
-            } else if (op.equals("ATUALIZAR")) {
-                int id = Integer.parseInt(request.getParameter("txtid"));
+            }else if(op.equals("FORMULARIO_ALTERAR")) {
+                int id = parseInt(request.getParameter("id"));
                 c.setId(id);
+                String msg = "Redirecionar";
                 try {
                     c = cdao.consultarPeloId(c);
                     request.setAttribute("c", c);
-                    request.getRequestDispatcher("/WEB-INF/views/results/resultadoconsultaratualizar.jsp").forward(request, response);
-                } catch (ClassNotFoundException | SQLException exCoA) {
-                    System.out.println("Erro ClassNotFound: " + exCoA.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/atualizar_usuFORM.jsp").forward(request, response);
+                } catch (SQLException | ClassNotFoundException | FileNotFoundException exRV) {
+                    System.out.println("Erro no: " + exRV.getMessage());
+                    request.setAttribute("message", "Arquivo não encontrado");
+                    request.getRequestDispatcher("/WEB-INF/errors/vitrineError.jsp").forward(request, response);
                 }
-            } else if (op.equals("EFETIVAR ATUALIZAÇÂO")) {
+            }else if (op.equals("ATUALIZAR")) {
                 int id = Integer.parseInt(request.getParameter("txtid"));
                 String nome = request.getParameter("txtnome");
                 String email = request.getParameter("txtemail");
                 String senha = request.getParameter("txtsenha");
                 c.setId(id);
+                c.setNome(nome);
                 c.setEmail(email);
                 c.setSenha(senha);
-                String msgAtu = "Atualizar";
+                String msg = "Atualizar";
                 try {
                     cdao.alterar(c);
                     System.out.println("Atualizado com sucesso");
-                    request.setAttribute("message", msgAtu);
+                    request.setAttribute("message", msg);
                     request.getRequestDispatcher("/WEB-INF/views/results/resultado.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exATU) {
                     System.out.println("Erro ClassNotFound: " + exATU.getMessage());
-                    request.setAttribute("message", msgAtu);
+                    request.setAttribute("message", msg);
                     request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
                 }
             }else if (op.equals("LOGIN")) {
@@ -111,11 +118,11 @@ public class controle_cliente extends HttpServlet {
                 String senha = request.getParameter("txtsenha");
 
                 try {
-                    cliente clienteLogado = cdao.autenticar(email, senha);
+                    usuario usuarioLogado = cdao.autenticar(email, senha);
 
-                    if (clienteLogado != null) {
+                    if (usuarioLogado != null) {
                         jakarta.servlet.http.HttpSession sessao = request.getSession();
-                        sessao.setAttribute("usuarioLogado", clienteLogado);
+                        sessao.setAttribute("usuarioLogado", usuarioLogado);
 
                         request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
                     } else {
@@ -126,6 +133,16 @@ public class controle_cliente extends HttpServlet {
                     System.out.println("Erro na autenticação: " + ex.getMessage());
                     request.setAttribute("message", "Erro interno no servidor.");
                     request.getRequestDispatcher("/WEB-INF/views/errors/erro.jsp").forward(request, response);
+                }
+            }else if(op.equals("REDIRECIONAR_USUARIOS")){
+                String msg = "Redirecionamento de Usuario";
+                try {
+                    request.getRequestDispatcher("/WEB-INF/views/listaUSU.jsp").forward(request, response);
+                    request.setAttribute("message", msg);
+                } catch (Exception exRV) {
+                    System.out.println("Erro no: " + exRV.getMessage());
+                    request.setAttribute("message", "Arquivo não encontrado");
+                    request.getRequestDispatcher("/WEB-INF/errors/vitrineError.jsp").forward(request, response);
                 }
             }
         }

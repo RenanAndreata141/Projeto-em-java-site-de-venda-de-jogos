@@ -23,7 +23,7 @@
   <!-- Servlet controle_cliente -->
   <servlet>
     <servlet-name>controle_cliente</servlet-name>
-    <servlet-class>controller.controle_cliente</servlet-class>
+    <servlet-class>controller.controle_usuarios</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>controle_cliente</servlet-name>

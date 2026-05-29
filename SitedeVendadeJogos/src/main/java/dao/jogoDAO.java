@@ -29,44 +29,55 @@ public class jogoDAO {
     }
     public void deletar(jogo j) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("delete from jogos where id = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement imgCmd = con.prepareStatement("delete from imagens where id_jogo = ?");
+        imgCmd.setInt(1, j.getId());
+        imgCmd.execute();
+
+        PreparedStatement comando = con.prepareStatement("delete from jogos where id = ?");
         comando.setInt(1,j.getId());
         comando.execute();
-        ResultSet rs = comando.getGeneratedKeys();
-        if (rs.next()) {
-            int idJogo = rs.getInt(1);
-            PreparedStatement imgCmd = con.prepareStatement("delete from images where id = ?");
-            imgCmd.setInt(1, idJogo);
-            imgCmd.execute();
-        }
         con.close();
     }
     public void alterar(jogo j) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("update jogos set nome = ?, preco = ? where id = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement comando = con.prepareStatement("update jogos set nome = ?, preco = ? where id = ?");
         comando.setString(1, j.getNome());
         comando.setDouble(2, j.getPreco());
-        comando.setInt(4, j.getId());
+        comando.setInt(3, j.getId());
         comando.execute();
-        ResultSet rs = comando.getGeneratedKeys();
-        if(rs.next()){
-            int idJogo = rs.getInt(1);
-            PreparedStatement imgCmd = con.prepareStatement("update table images set nome-arquivo = ?, id_jogo = ?, dados-imagem = ?, tipo_mime = ? where id = ?");
-            imgCmd.setInt(1,idJogo);
+
+        PreparedStatement verificar = con.prepareStatement("select id from imagens where id_jogo = ?");
+        verificar.setInt(1, j.getId());
+        ResultSet rs = verificar.executeQuery();
+        if (rs.next()) {
+            PreparedStatement imgCmd = con.prepareStatement("update imagens set nome_arquivo = ?, dados_imagem = ?, tipo_mime = ? where id_jogo = ?");
+            imgCmd.setString(1, j.getImagem());
+            imgCmd.setString(2, j.getImagem());
+            imgCmd.setString(3, "image/png");
+            imgCmd.setInt(4, j.getId());
             imgCmd.execute();
+        } else {
+        // Não existe — faz INSERT
+            PreparedStatement imgInsert = con.prepareStatement("insert into imagens (id_jogo, nome_arquivo, dados_imagem, tipo_mime) values (?, ?, ?, ?)");
+        imgInsert.setInt(1, j.getId());
+        imgInsert.setString(2, j.getImagem());
+        imgInsert.setString(3, j.getImagem());
+        imgInsert.setString(4, "image/png");
+        imgInsert.execute();
         }
         con.close();
     }
     public jogo consultarPeloId(jogo j) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("select * from jogos where id = ?");
-        comando.setInt(1, j.getId());
+        PreparedStatement comando = con.prepareStatement("select j.id, j.nome, j.preco, i.dados_imagem from jogos j left join imagens i on i.id_jogo = j.id where j.id = ?");
+        comando.setInt(1,j.getId());
         ResultSet rs = comando.executeQuery();
         jogo jogo = new jogo();
         if(rs.next()){
             jogo.setId(rs.getInt("id"));
-            jogo.setNome("nome");
+            jogo.setNome(rs.getString("nome"));
             jogo.setPreco(rs.getDouble("preco"));
+            jogo.setImagem(rs.getString("dados_imagem"));
         }
         return jogo;
     }

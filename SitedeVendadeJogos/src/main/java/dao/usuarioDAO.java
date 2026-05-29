@@ -1,6 +1,6 @@
 package dao;
 
-import model.cliente;
+import model.usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class clienteDAO {
-    public void cadastrar(cliente c) throws ClassNotFoundException, SQLException{
+public class usuarioDAO {
+    public void cadastrar(usuario c) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
         PreparedStatement comando = con.prepareStatement("Insert into usuarios (nome, email, senha) values (?, ? ,md5(?))");
         comando.setString(1, c.getNome());
@@ -19,16 +19,16 @@ public class clienteDAO {
         comando.execute();
         con.close();
     }
-    public void deletar(cliente c) throws ClassNotFoundException, SQLException{
+    public void deletar(usuario c) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
         PreparedStatement comando = con.prepareStatement("delete from usuarios where id = ?");
         comando.setInt(1,c.getId());
         comando.execute();
         con.close();
     }
-    public void alterar(cliente c) throws ClassNotFoundException, SQLException{
+    public void alterar(usuario c) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("update clientes set nome = ?, email = ?, senha = ? where id = ?");
+        PreparedStatement comando = con.prepareStatement("update usuarios set nome = ?, email = ?, senha = ? where id = ?");
         comando.setString(1, c.getNome());
         comando.setString(2, c.getEmail());
         comando.setString(3, c.getSenha());
@@ -36,27 +36,27 @@ public class clienteDAO {
         comando.execute();
         con.close();
     }
-    public cliente consultarPeloId(cliente c) throws ClassNotFoundException, SQLException{
+    public usuario consultarPeloId(usuario c) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
         PreparedStatement comando = con.prepareStatement("select * from usuarios where id = ?");
         comando.setInt(1, c.getId());
         ResultSet rs = comando.executeQuery();
-        cliente cli = new cliente();
+        usuario cli = new usuario();
         if(rs.next()){
             cli.setId(rs.getInt("id"));
-            cli.setNome("nome");
-            cli.setEmail("email");
-            cli.setSenha("senha");
+            cli.setNome(rs.getString("nome"));
+            cli.setEmail(rs.getString("email"));
+            cli.setSenha(rs.getString("senha"));
         }
         return cli;
     }
-    public List<cliente> consultarTodos() throws ClassNotFoundException, SQLException{
+    public List<usuario> consultarTodos() throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
         PreparedStatement comando = con.prepareStatement("select * from usuarios");
         ResultSet rs = comando.executeQuery();
-        List<cliente> lcliente = new ArrayList<cliente>();
+        List<usuario> lcliente = new ArrayList<usuario>();
         while(rs.next()){
-            cliente cli = new cliente();
+            usuario cli = new usuario();
             cli.setId(rs.getInt("id"));
             cli.setNome(rs.getString("nome"));
             cli.setEmail(rs.getString("email"));
@@ -65,15 +65,15 @@ public class clienteDAO {
         }
         return lcliente;
     }
-    public cliente autenticar(String email, String senha) throws ClassNotFoundException, SQLException {
+    public usuario autenticar(String email, String senha) throws ClassNotFoundException, SQLException {
         Connection con = conexao.getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM usuarios WHERE email = ? AND senha = md5(?)");
         comando.setString(1, email);
         comando.setString(2, senha);
         ResultSet rs = comando.executeQuery();
-        cliente cli = null;
+        usuario cli = null;
         if (rs.next()) {
-            cli = new cliente();
+            cli = new usuario();
             cli.setId(rs.getInt("id"));
             cli.setNome(rs.getString("nome"));
             cli.setEmail(rs.getString("email"));

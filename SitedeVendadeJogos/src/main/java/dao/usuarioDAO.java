@@ -28,7 +28,7 @@ public class usuarioDAO {
     }
     public void alterar(usuario c) throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("update usuarios set nome = ?, email = ?, senha = ? where id = ?");
+        PreparedStatement comando = con.prepareStatement("update usuarios set nome = ?, email = ?, senha = md5(?) where id = ?");
         comando.setString(1, c.getNome());
         comando.setString(2, c.getEmail());
         comando.setString(3, c.getSenha());
@@ -77,6 +77,7 @@ public class usuarioDAO {
             cli.setId(rs.getInt("id"));
             cli.setNome(rs.getString("nome"));
             cli.setEmail(rs.getString("email"));
+            cli.setSenha(rs.getString("senha"));
         }
         con.close();
         return cli;

@@ -48,14 +48,12 @@ public class controle_usuarios extends HttpServlet {
 
                 }
             } else if (op.equals("DELETAR")) {
-                int id = Integer.parseInt(request.getParameter("txtid"));
+                int id = Integer.parseInt(request.getParameter("id"));
                 c.setId(id);
                 String msg = "Deletar";
                 try {
                     cdao.deletar(c);
-                    List<usuario> lcliente = cdao.consultarTodos();
-                    request.setAttribute("lcliente", lcliente);
-                    request.getRequestDispatcher("resultadoconsultartodos.jsp").forward(request, response);
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
                 } catch (ClassNotFoundException | SQLException exD) {
                     System.out.println("Erro ClassNotFound: " + exD.getMessage());
                     request.setAttribute("message", msg);

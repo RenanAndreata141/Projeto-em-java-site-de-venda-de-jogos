@@ -57,13 +57,12 @@ public class jogoDAO {
             imgCmd.setInt(4, j.getId());
             imgCmd.execute();
         } else {
-        // Não existe — faz INSERT
             PreparedStatement imgInsert = con.prepareStatement("insert into imagens (id_jogo, nome_arquivo, dados_imagem, tipo_mime) values (?, ?, ?, ?)");
-        imgInsert.setInt(1, j.getId());
-        imgInsert.setString(2, j.getImagem());
-        imgInsert.setString(3, j.getImagem());
-        imgInsert.setString(4, "image/png");
-        imgInsert.execute();
+            imgInsert.setInt(1, j.getId());
+            imgInsert.setString(2, j.getImagem());
+            imgInsert.setString(3, j.getImagem());
+            imgInsert.setString(4, "image/png");
+            imgInsert.execute();
         }
         con.close();
     }
@@ -83,7 +82,7 @@ public class jogoDAO {
     }
     public List<jogo> consultarTodos() throws ClassNotFoundException, SQLException{
         Connection con = conexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("SELECT j.id, j.nome, j.preco, i.dados_imagem FROM jogos j LEFT JOIN imagens i ON i.id_jogo = j.id");
+        PreparedStatement comando = con.prepareStatement("select j.id, j.nome, j.preco, i.dados_imagem FROM jogos j left join imagens i on i.id_jogo = j.id");
         ResultSet rs = comando.executeQuery();
         List<jogo> ljogos = new ArrayList<jogo>();
         while(rs.next()){
